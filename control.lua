@@ -8,22 +8,6 @@ local event = require("event")
 
 local reactor = component.br_reactor
 
--- Check if connected to reactor computer control
-if (reactor)
-  then
-    print("Successful connection to reactor")
-  else
-    print("Error: Computer not connected to Reactor Computer Port")
-end
-
--- Check if reactor is a valid configuration
-if (reactor.getConnected())
-  then
-    print("Reactor is Valid")
-  else
-    print("Reactor structure is invalid")
-end
-
 -- Intialize reactor stats table
 reactor["stats"] = {}
 reactor.stats["state"] = false
@@ -46,10 +30,60 @@ function pullReactorInfo(reactor)
   reactor.stats.controlRodLevel = reactor.getControlRodLevel(1)
 end
 
+-- Check if reactor can be started
+function canStart()
+  -- Check if connected to reactor computer control
+  if (reactor)
+    then
+      print("Successful connection to reactor")
+    else
+      print("Error: Computer not connected to Reactor Computer Port")
+      return 0
+  end
+
+  -- Check if reactor is a valid configuration
+  if (reactor.getConnected())
+    then
+      print("Reactor is Valid")
+    else
+      print("Reactor structure is invalid")
+      return 0
+  end
+
+  -- check if reactor has fuel
+  if (reactor.stats.fuelCurrent == 0)
+    then
+    print("Reactor is out of fuel!")
+    return 0
+  end
+
+  -- check if reactor is already started
+  if (!reactor.stats.state)
+    then
+    return 0
+  end
+
+  return 1
+
+end
+
+function reactorStart()
+
+  if (canStart())
+  then
+    reactor.setActive(true)
+    print("Reactor is starting")
+  else
+    print("Reactor cannot start")
+  end
+
+end
+
 pullReactorInfo(reactor)
 
 while(reactor.stats.state)
 do
 
+  reactorStart()
 
 end
