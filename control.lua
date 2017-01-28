@@ -24,6 +24,7 @@ if (reactor.getConnected())
     print("Reactor structure is invalid")
 end
 
+-- Intialize reactor stats table
 reactor["stats"] = {}
 reactor.stats["state"] = false
 reactor.stats["fuelCurrent"] = 0
@@ -33,6 +34,8 @@ reactor.stats["energyStored"] = 0
 reactor.stats["energyTick"] = 0
 reactor.stats["controlRodLevel"] = 0
 
+
+-- Pull and store reactor info
 function pullReactorInfo(reactor)
   reactor.stats.state = reactor.getActive()
   reactor.stats.fuelCurrent = reactor.getFuelAmount()
@@ -40,7 +43,7 @@ function pullReactorInfo(reactor)
   reactor.stats.wasteCurrent = reactor.getWasteAmount()
   reactor.stats.energyStored = reactor.getEnergyStored()
   reactor.stats.energyTick = reactor.getEnergyProducedLastTick()
-  reactor.stats.controlRodLevel = reactor.getControlRedLevel(1)
+  reactor.stats.controlRodLevel = reactor.getControlRodLevel(1)
 end
 
 pullReactorInfo(reactor)
