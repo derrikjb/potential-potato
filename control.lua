@@ -1,5 +1,5 @@
 
-/* Main file for reactor control*/
+--[[ Main file for reactor control*/ --]]
 
 local filesystem = require("filesystem")
 local component = require("component")
@@ -17,7 +17,7 @@ end
 
 
 
-// Check if a reactor is present
+-- Check if a reactor is present
 function isReactor()
   return component.br_reactor
 end
